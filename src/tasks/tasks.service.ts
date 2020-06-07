@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './tasks.model';
 import {v1 as uuid} from "uuid"
+import { CreateTaskDto } from './dto/create-task.dto';
 @Injectable()
 export class TasksService {
     private tasks: Task[] = [];
-
+    
     // this :Task[] simply defining the type
     getAllTasks() :Task[] {
         return this.tasks;
     }
-
-    createTask(title:string, description:string): Task {
+    getTaskById(id: string): Task {
+        return this.tasks.find(task => task.id === id);
+    }
+    createTask(createTaskDto: CreateTaskDto): Task {
+        const { title, description } = createTaskDto;
         const task: Task = {
             id: uuid(),
             title, 
@@ -19,6 +23,10 @@ export class TasksService {
         }
         this.tasks.push(task);
         return task;
+    }
+    deleteTask(id: string): Task[] {
+        this.tasks = this.tasks.filter(task => task.id !== id)
+        return this.tasks;
     }
 
 }
