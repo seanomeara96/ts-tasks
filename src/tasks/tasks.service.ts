@@ -25,8 +25,22 @@ export class TasksService {
         return task;
     }
     deleteTask(id: string): Task[] {
-        this.tasks = this.tasks.filter(task => task.id !== id)
-        return this.tasks;
+        return this.tasks = this.tasks.filter(task => task.id !== id);
     }
 
+    updateTask(id: string, taskKey: string, newVal) {
+        this.tasks = this.tasks.map(task => {
+            if (task.id === id) {
+                switch(taskKey){
+                    case "title":
+                        return {...task, title: newVal};
+                    case "description":
+                        return {...task, description: newVal};
+                    case "status":
+                        return {...task, status: newVal};
+                }
+            }
+            return task;
+        })
+    }
 }
